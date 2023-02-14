@@ -18,6 +18,10 @@ canvas = drawer.draw_text(text, image_width)
 canvas.save(open("test.png", "wb")) 
 ```
 
+结果：
+
+![图片](./test.png)
+
 特性：
 
 - 快速，800字平均渲染时长为0.04s（i7 cpu 2.7GHz）
