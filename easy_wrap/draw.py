@@ -1,4 +1,5 @@
 import re
+from typing import Dict
 from PIL import ImageFont
 from PIL import ImageDraw
 from PIL import Image
@@ -7,20 +8,23 @@ zh_pt = re.compile(r"[\u4e00-\u9fa5|\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\u
 
 en_pt = re.compile(r"[a-zA-Z]")
 
+
 def is_zh(char: str):
     return not not zh_pt.match(char)
+
 
 def is_en(char: str):
     return not not en_pt.match(char)
 
+
 class Drawer:
     '''绘制器
-    
+
     示例代码：
 
     ```
     from easy_wrap import Drawer
-    
+
     text = "... the text you want to render ....测试自动换行"
 
     font_path = "msyh.ttc"
@@ -29,20 +33,20 @@ class Drawer:
 
     image_width = 180
     canvas = drawer.draw_text(text, image_width)
-    
+
     # save the image
     canvas.save(open("test.png", "wb")) 
     ```
     '''
-    
+
     def __init__(self, fontpath: str, fontsize: int = 26) -> None:
         self.canvas = Image.new('RGB', (100, 100))
         self.draw = ImageDraw.Draw(self.canvas)
         self.font = ImageFont.truetype(fontpath, fontsize)
-        self.char_width_dict:dict[str,int] = {}
+        self.char_width_dict: Dict[str, int] = {}
         h1 = self.get_text_height("a\na")
         h2 = self.get_text_height("a")
-        self.char_height:int = h1 - h2
+        self.char_height: int = h1 - h2
 
     def get_text_height(self, text: str):
         self.draw.rectangle((0, 0, 100, 100), fill=(0, 0, 0))
@@ -86,7 +90,7 @@ class Drawer:
         for chars in text.split("\n"):
             # 换行的最小单位
             units = []
-            
+
             last_word = ""
             for char in chars:
                 if is_en(char):
@@ -96,7 +100,7 @@ class Drawer:
                     units.append(char)
                     last_word = ""
             units.append(last_word)
-            
+
             width = 0
             line = ""
             for unit in units:
@@ -111,7 +115,7 @@ class Drawer:
                     width = w
                 else:
                     line += unit
-                    
+
             lines.append(line)
         return lines
 

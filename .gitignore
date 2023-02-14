@@ -2,3 +2,4 @@ __pycache__
 /*.py
 /*.jpg
 /*.png
+/dist
