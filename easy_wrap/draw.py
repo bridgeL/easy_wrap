@@ -1,5 +1,5 @@
 import re
-from typing import Dict
+from typing import Dict, Tuple
 from PIL import ImageFont
 from PIL import ImageDraw
 from PIL import Image
@@ -119,7 +119,7 @@ class Drawer:
             lines.append(line)
         return lines
 
-    def draw_text(self, text: str, width_max: int, ft_color: tuple[int, int, int] = (0, 0, 0), bg_color: tuple[int, int, int] = (220, 220, 200)):
+    def draw_text(self, text: str, width_max: int, ft_color: Tuple[int, int, int] = (0, 0, 0), bg_color: Tuple[int, int, int] = (220, 220, 200)):
         """渲染文本为图片，并自动换行
 
         Args:
