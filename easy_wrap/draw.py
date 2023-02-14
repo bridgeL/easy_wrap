@@ -40,31 +40,60 @@ class Drawer:
     '''
 
     def __init__(self, fontpath: str, fontsize: int = 26) -> None:
-        self.canvas = Image.new('RGB', (100, 100))
-        self.draw = ImageDraw.Draw(self.canvas)
-        self.font = ImageFont.truetype(fontpath, fontsize)
+        self._canvas = Image.new('RGB', (100, 100))
+        self._draw = ImageDraw.Draw(self._canvas)
+        self._font = ImageFont.truetype(fontpath, fontsize)
+        
         self.char_width_dict: Dict[str, int] = {}
+        '''所有字符的渲染宽度'''
+        
         h1 = self.get_text_height("a\na")
         h2 = self.get_text_height("a")
         self.char_height: int = h1 - h2
+        '''所有字符的渲染高度'''
 
     def get_text_height(self, text: str):
-        self.draw.rectangle((0, 0, 100, 100), fill=(0, 0, 0))
-        self.draw.text((0, 0), text, font=self.font)
-        bbox = self.canvas.getbbox()
+        """获取文本渲染后的高度
+
+        Args:
+            text (str): 文本
+
+        Returns:
+            int|None: 当bbox为None时返回None，否则返回高度
+        """        
+        self._draw.rectangle((0, 0, 100, 100), fill=(0, 0, 0))
+        self._draw.text((0, 0), text, font=self._font)
+        bbox = self._canvas.getbbox()
         if bbox:
             left, top, right, down = bbox
             return down
 
     def get_text_width(self, text: str):
-        self.draw.rectangle((0, 0, 100, 100), fill=(0, 0, 0))
-        self.draw.text((0, 0), text, font=self.font)
-        bbox = self.canvas.getbbox()
+        """获取文本渲染后的宽度
+
+        Args:
+            text (str): 文本
+
+        Returns:
+            int|None: 当bbox为None时返回None，否则返回宽度
+        """        
+        self._draw.rectangle((0, 0, 100, 100), fill=(0, 0, 0))
+        self._draw.text((0, 0), text, font=self._font)
+        bbox = self._canvas.getbbox()
         if bbox:
             left, top, right, down = bbox
             return right
 
     def get_char_width(self, char: str):
+        """获取字符渲染后的宽度
+
+        Args:
+            char (str): 字符
+
+        Returns:
+            int: 返回字符的宽度
+        """     
+        
         # 汉字宽度一致
         if is_zh(char):
             char = "汉"
@@ -119,12 +148,14 @@ class Drawer:
             lines.append(line)
         return lines
 
-    def draw_text(self, text: str, width_max: int, ft_color: Tuple[int, int, int] = (0, 0, 0), bg_color: Tuple[int, int, int] = (220, 220, 200)):
+    def draw_text(self, text: str, width_max: int, ft_color: Tuple[int, int, int] = (0, 0, 0), bg_color: Tuple[int, int, int] = (255, 255, 255)):
         """渲染文本为图片，并自动换行
 
         Args:
             text (str): 文本
             width_max (int): 图片宽度
+            ft_color (Tuple[int, int, int], optional): 字体颜色. Defaults to (0, 0, 0).
+            bg_color (Tuple[int, int, int], optional): 背景颜色. Defaults to (255, 255, 255).
 
         Returns:
             PIL.Image: 图片
@@ -139,5 +170,5 @@ class Drawer:
         # 绘图
         canvas = Image.new('RGB', (width_max, height_max), color=bg_color)
         draw = ImageDraw.Draw(canvas)
-        draw.text((0, 0), text, font=self.font, fill=ft_color)
+        draw.text((0, 0), text, font=self._font, fill=ft_color)
         return canvas

@@ -1,6 +1,15 @@
-## 基于pillow的简单文本转图片渲染工具
+# easy_wrap
 
-示例代码：
+基于[pillow](https://python-pillow.org/)的简单文本转图片渲染工具，帮助实现自动换行
+
+## 安装
+
+```pip install easy_wrap```
+
+**需要Python3.8及以上环境**
+
+
+## 示例代码
 
 ```py
 from easy_wrap import Drawer
@@ -18,11 +27,9 @@ canvas = drawer.draw_text(text, image_width)
 canvas.save(open("test.png", "wb")) 
 ```
 
-结果：
-
 ![图片](./test.png)
 
-特性：
+## 特性
 
 - 快速，800字平均渲染时长为0.04s（i7 cpu 2.7GHz）
 - 遵循如下换行规则（与css word-break: normal 稍有差异）
@@ -39,3 +46,7 @@ canvas.save(open("test.png", "wb"))
 ### 0.1.1
 
 - 修复BUG：修复3.10以下python环境调用easy_wrap发生`TypeError: 'type' object is not subscriptable`的问题
+
+### 0.1.2
+
+- 优化代码结构，完善注释
